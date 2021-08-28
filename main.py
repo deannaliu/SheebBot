@@ -7,10 +7,16 @@ import json
 client = discord.Client()  #creates an instance of a client
 
 def get_quote():
-    response = requests.get("https://zenquotes.io/api/random")
-    json_data = json.loads(response.text)
-    quote = json_data[0]['q'] + " -" + json_data[0]['a']
-    return(quote)
+  response = requests.get("https://zenquotes.io/api/random")
+  json_data = json.loads(response.text)
+  quote = json_data[0]['q'] + " -" + json_data[0]['a']
+  return(quote)
+
+def get_shibe():
+  response = requests.get("https://shibe.online/api/shibes?")
+  json_data = json.loads(response.text)
+  shibe = json_data[0]
+  return(shibe) 
 
 @client.event #this is how you register event
 async def on_ready(): #when bot ready to start being used
@@ -25,5 +31,8 @@ async def on_message(message): #if msg from bot, don't do anything
   if message.content.startswith('$inspire'):
     quote = get_quote()
     await message.channel.send(quote)
+  if message.content.startswith('$shibe'):
+    shiba = get_shibe()
+    await message.channel.send(shiba)  
 
 client.run(os.getenv('TOKEN'))
